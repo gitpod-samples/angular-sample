@@ -1,5 +1,27 @@
 image:
   file: gitpod.Dockerfile
+tasks:
+  - name: initialize
+    init: |
+      cd my-app
+      npm install
+      touch /workspace/install-done
+  - name: serve the app
+    command: |
+      cd my-app
+      while [ ! -f /workspace/install-done ]; do sleep 1; echo "waiting for npm install"; done
+      ng serve
+  - name: test the app
+    command: |
+      cd my-app
+      while [ ! -f /workspace/install-done ]; do sleep 1; echo "waiting for npm install"; done
+      ng test --browsers ChromeHeadless
+  - name: preview the app
+    command: |
+      gp await-port 4200 && gp preview localhost:4200 --external
+  - name: preview the tests
+    command: |
+      gp await-port 9876 && gp preview localhost:9876 --external
 ports:
   - port: 4200
     onOpen: open-browser
@@ -7,16 +29,3 @@ ports:
   - port: 9876
     onOpen: open-browser
     name: test
-tasks:
-  - name: initialize
-    init: |
-      cd my-app
-      npm install
-  - name: run in chrome
-    command: |
-      cd my-app
-      ng serve --open
-  - name: run tests
-    command: |
-      cd my-app
-      ng test --browsers ChromeHeadless
