@@ -1,0 +1,22 @@
+image:
+  file: gitpod.Dockerfile
+ports:
+  - port: 4200
+    onOpen: open-browser
+    name: serve
+  - port: 9876
+    onOpen: open-browser
+    name: test
+tasks:
+  - name: initialize
+    init: |
+      cd my-app
+      npm install
+  - name: run in chrome
+    command: |
+      cd my-app
+      ng serve --open
+  - name: run tests
+    command: |
+      cd my-app
+      ng test --browsers ChromeHeadless
