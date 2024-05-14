@@ -18,10 +18,10 @@ tasks:
       ng test --browsers ChromeHeadless
   - name: preview the app
     command: |
-      gp await-port 4200 && gp preview localhost:4200 --external
+      gp ports await 4200 && gp preview --external $(gp url 4200)
   - name: preview the tests
     command: |
-      gp await-port 9876 && gp preview localhost:9876 --external
+      gp ports await 9876 && gp preview --external $(gp url 9876)
 ports:
   - port: 4200
     onOpen: open-browser
